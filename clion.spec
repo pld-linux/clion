@@ -1,5 +1,5 @@
 %define		bid	140.1740.3
-%define		rel	0.4
+%define		rel	0.5
 %define		product	clion
 %include	/usr/lib/rpm/macros.java
 Summary:	C/C++ IDE
@@ -10,7 +10,7 @@ Release:	0.%{bid}.%{rel}
 # TODO: figure out what's the licensing and redistribution
 License:	?
 Group:		Development/Tools
-Source0:	http://download.jetbrains.com/cpp/clion-%{bid}.tar.gz
+Source0:	http://download.jetbrains.com/cpp/%{product}-%{bid}.tar.gz
 # NoSource0-md5:	af28ecedc672920503013ff457ed38df
 NoSource:	0
 Source1:	%{product}.desktop
@@ -21,6 +21,10 @@ BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	unzip
 Requires:	jre >= 1.6
+Suggests:	%{name}-cmake
+Suggests:	%{name}-gdb
+Suggests:	cmake
+Suggests:	gdb
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip fsnotifier, it's size is checked for "outdated binary"
@@ -42,8 +46,26 @@ is also available in plugin repository), full coding assistance, smart
 and relevant code completion, fast project navigation, intelligent
 intention actions, and reliable refactorings.
 
+%package cmake
+Summary:	Cross-platform, open-source make system
+Summary(pl.UTF-8):	Wieloplatformowy system make o otwartych źródłach
+Group:		Development/Building
+Requires:	%{name} = %{version}-%{release}
+
+%description cmake
+This package contains bundled CMake 2.8.12.2.
+
+%package gdb
+Summary:	A GNU source-level debugger for C, C++ and Fortran
+Summary(pl.UTF-8):	Symboliczny odpluskwiacz dla C i innych języków
+Group:		Development/Building
+Requires:	%{name} = %{version}-%{release}
+
+%description gdb
+This package contains bundled GDB 7.8
+
 %prep
-%setup -qn clion-%{bid}
+%setup -qn %{product}-%{bid}
 
 # keep only single arch files (don't want to pull 32bit deps by default),
 # if you want to mix, install rpm from both arch
@@ -111,7 +133,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/%{product}.desktop
 %{_pixmapsdir}/%{product}.svg
 
-# TODO: system packages
+%files cmake
+%defattr(644,root,root,755)
 %defattr(-,root,root,-)
 %{_appdir}/bin/cmake
+
+%files gdb
+%defattr(644,root,root,755)
+%defattr(-,root,root,-)
 %{_appdir}/bin/gdb
