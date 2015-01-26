@@ -13,6 +13,7 @@ Group:		Development/Tools
 Source0:	http://download.jetbrains.com/cpp/clion-%{bid}.tar.gz
 # NoSource0-md5:	af28ecedc672920503013ff457ed38df
 NoSource:	0
+Patch0:		pld.patch
 URL:		http://www.jetbrains.com/clion/
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
@@ -62,6 +63,8 @@ rm -r lib/libpty/linux/x86
 rm -r lib/libpty/{macosx,win}
 chmod a+rx bin/*.so bin/fsnotifier*
 mv bin/%{product}.svg .
+
+%patch0 -p1
 
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
