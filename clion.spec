@@ -13,6 +13,7 @@ Group:		Development/Tools
 Source0:	http://download.jetbrains.com/cpp/clion-%{bid}.tar.gz
 # NoSource0-md5:	af28ecedc672920503013ff457ed38df
 NoSource:	0
+Source1:	%{product}.desktop
 Patch0:		pld.patch
 URL:		http://www.jetbrains.com/clion/
 BuildRequires:	jpackage-utils
@@ -75,6 +76,7 @@ install -d $RPM_BUILD_ROOT{%{_appdir},%{_bindir},%{_pixmapsdir},%{_desktopdir}}
 cp -l build.txt $RPM_BUILD_ROOT/cp-test && l=l && rm -f $RPM_BUILD_ROOT/cp-test
 cp -a$l bin help lib license plugins $RPM_BUILD_ROOT%{_appdir}
 ln -s %{_pixmapsdir}/%{product}.svg $RPM_BUILD_ROOT%{_appdir}/bin
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 cp -p %{product}.svg $RPM_BUILD_ROOT%{_pixmapsdir}
 ln -s %{_appdir}/bin/%{product}.sh $RPM_BUILD_ROOT%{_bindir}/%{product}
 
@@ -104,6 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_appdir}/lib/libpty/linux
 %dir %{_appdir}/lib/libpty/linux/x86*
 %attr(755,root,root) %{_appdir}/lib/libpty/linux/x86*/libpty.so
+%{_desktopdir}/%{product}.desktop
 %{_pixmapsdir}/%{product}.svg
 
 # TODO: system packages
