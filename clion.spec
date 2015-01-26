@@ -91,7 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/license
 %{_appdir}/plugins
 %dir %{_appdir}/bin
+%ifnarch %{ix86}
 %{_appdir}/bin/%{product}*.vmoptions
+%endif
 %{_appdir}/bin/%{product}.svg
 %{_appdir}/bin/idea.properties
 %{_appdir}/bin/log.xml
