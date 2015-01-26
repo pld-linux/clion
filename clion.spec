@@ -1,5 +1,5 @@
 %define		bid	140.1740.3
-%define		rel	0.3
+%define		rel	0.4
 %define		product	clion
 %include	/usr/lib/rpm/macros.java
 Summary:	C/C++ IDE
@@ -73,12 +73,14 @@ cp -l build.txt $RPM_BUILD_ROOT/cp-test && l=l && rm -f $RPM_BUILD_ROOT/cp-test
 cp -a$l bin help lib license plugins $RPM_BUILD_ROOT%{_appdir}
 ln -s %{_pixmapsdir}/%{product}.svg $RPM_BUILD_ROOT%{_appdir}/bin
 cp -p %{product}.svg $RPM_BUILD_ROOT%{_pixmapsdir}
+ln -s %{_appdir}/bin/%{product}.sh $RPM_BUILD_ROOT%{_bindir}/%{product}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/%{product}
 %dir %{_appdir}
 %{_appdir}/help
 %{_appdir}/license
