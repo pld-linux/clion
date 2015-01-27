@@ -23,8 +23,8 @@ BuildRequires:	unzip
 Requires:	jre >= 1.6
 Suggests:	%{name}-cmake
 Suggests:	%{name}-gdb
-Suggests:	cmake
-Suggests:	gdb
+Suggests:	cmake >= 2.8
+Suggests:	gdb >= 7.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # don't strip fsnotifier, it's size is checked for "outdated binary"
