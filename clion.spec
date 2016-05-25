@@ -50,7 +50,7 @@ Group:		Development/Building
 Requires:	%{name} = %{version}-%{release}
 
 %description cmake
-This package contains bundled CMake 2.8.12.2.
+This package contains bundled CMake 3.5.1.
 
 %package gdb
 Summary:	A GNU source-level debugger for C, C++ and Fortran
