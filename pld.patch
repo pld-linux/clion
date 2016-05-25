@@ -12,18 +12,18 @@
  CLASSPATH="$IDE_HOME/lib/bootstrap.jar"
  CLASSPATH="$CLASSPATH:$IDE_HOME/lib/extensions.jar"
  CLASSPATH="$CLASSPATH:$IDE_HOME/lib/util.jar"
---- clion-140.1740.3/bin/idea.properties~	2015-01-19 20:44:48.000000000 +0200
-+++ clion-140.1740.3/bin/idea.properties	2015-01-26 21:30:48.402786767 +0200
+--- clion-2016.1.2/bin/idea.properties~	2016-05-18 00:50:46.000000000 +0300
++++ clion-2016.1.2/bin/idea.properties	2016-05-25 18:40:32.181585904 +0300
 @@ -6,21 +6,25 @@
  # Uncomment this option if you want to customize path to IDE config folder. Make sure you're using forward slashes.
  #---------------------------------------------------------------------
- # idea.config.path=${user.home}/.clion/config
+ # idea.config.path=${user.home}/.CLion/config
 +idea.config.path=${config.dir}
  
  #---------------------------------------------------------------------
  # Uncomment this option if you want to customize path to IDE system folder. Make sure you're using forward slashes.
  #---------------------------------------------------------------------
- # idea.system.path=${user.home}/.clion/system
+ # idea.system.path=${user.home}/.CLion/system
 +idea.system.path=${cache.dir}
  
  #---------------------------------------------------------------------

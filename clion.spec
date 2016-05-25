@@ -1,17 +1,14 @@
-%define		bid	140.1740.3
-%define		rel	0.5
 %define		product	clion
 %include	/usr/lib/rpm/macros.java
 Summary:	C/C++ IDE
 Name:		clion
-# About says "Version 1", but lets see first what first version will be
-Version:	0
-Release:	0.%{bid}.%{rel}
+Version:	2016.1.2
+Release:	1
 # TODO: figure out what's the licensing and redistribution
 License:	?
 Group:		Development/Tools
-Source0:	http://download.jetbrains.com/cpp/%{product}-%{bid}.tar.gz
-# NoSource0-md5:	af28ecedc672920503013ff457ed38df
+Source0:	https://download.jetbrains.com/cpp/CLion-%{version}b.tar.gz
+# NoSource0-md5:	f4d00988caf8a3474d2822874d7db345
 NoSource:	0
 Source1:	%{product}.desktop
 Patch0:		pld.patch
@@ -65,26 +62,40 @@ Requires:	%{name} = %{version}-%{release}
 This package contains bundled GDB 7.8
 
 %prep
-%setup -qn %{product}-%{bid}
+%setup -qn %{product}-%{version}
 
 # keep only single arch files (don't want to pull 32bit deps by default),
 # if you want to mix, install rpm from both arch
-%ifarch %{ix86}
+%ifnarch %{x8664}
 rm bin/fsnotifier64
 rm bin/libyjpagent-linux64.so
 rm bin/libbreakgen64.so
 rm bin/%{product}64.vmoptions
 rm -r lib/libpty/linux/x86_64
+rm -r plugins/tfsIntegration/lib/native/linux/x86_64
 %endif
-%ifarch %{x8664}
+%ifnarch %{ix86}
 rm bin/fsnotifier
 rm bin/libyjpagent-linux.so
 rm bin/libbreakgen.so
 #rm bin/%{product}.vmoptions
 rm -r lib/libpty/linux/x86
+rm -r plugins/tfsIntegration/lib/native/linux/x86
 %endif
+%ifnarch arm
+rm bin/fsnotifier-arm
+rm -r plugins/tfsIntegration/lib/native/linux/arm
+%endif
+%ifnarch ppc
+rm -r plugins/tfsIntegration/lib/native/linux/ppc
+%endif
+%ifos Linux
 rm -r lib/libpty/{macosx,win}
-chmod a+rx bin/*.so bin/fsnotifier*
+rm -r plugins/tfsIntegration/lib/native/{aix,freebsd,hpux,macosx,solaris,win32}
+chmod a+rx plugins/tfsIntegration/lib/native/linux/*/*.so
+%endif
+chmod a+rx bin/*.so bin/fsnotifier* lib/libpty/linux/*/*.so
+
 mv bin/%{product}.svg .
 
 %patch0 -p1
@@ -124,6 +135,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_appdir}/bin/fsnotifier*
 %attr(755,root,root) %{_appdir}/bin/libbreakgen*.so
 %attr(755,root,root) %{_appdir}/bin/libyjpagent-linux*.so
+# not packaging due liblldb.so.3 => not found
+#%attr(755,root,root) %{_appdir}/bin/LLDBFrontend
 %dir %{_appdir}/lib
 %{_appdir}/lib/*.jar
 %dir %{_appdir}/lib/libpty
