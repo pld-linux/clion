@@ -2,20 +2,20 @@
 %include	/usr/lib/rpm/macros.java
 Summary:	C/C++ IDE
 Name:		clion
-Version:	2016.1.2
+Version:	2016.2
 Release:	1
 # TODO: figure out what's the licensing and redistribution
 License:	?
 Group:		Development/Tools
-Source0:	https://download.jetbrains.com/cpp/CLion-%{version}b.tar.gz
-# NoSource0-md5:	f4d00988caf8a3474d2822874d7db345
+Source0:	https://download.jetbrains.com/cpp/CLion-%{version}.tar.gz
+# NoSource0-md5:	3188ed0cde65018b95d3257081bad000
 NoSource:	0
 Source1:	%{product}.desktop
 Patch0:		pld.patch
 URL:		http://www.jetbrains.com/clion/
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
-BuildRequires:	rpmbuild(macros) >= 1.300
+BuildRequires:	rpmbuild(macros) >= 1.583
 BuildRequires:	unzip
 Requires:	jre >= 1.6
 Suggests:	%{name}-cmake
@@ -23,6 +23,9 @@ Suggests:	%{name}-gdb
 Suggests:	cmake >= 2.8
 Suggests:	gdb >= 7.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# Unresolved symbols found: _ZSt11__once_call: _ZSt15__once_callable
+%define		skip_post_check_so	liblldb.so.3
 
 # don't strip fsnotifier, it's size is checked for "outdated binary"
 # https://bugs.archlinux.org/task/34703
@@ -60,6 +63,25 @@ Requires:	%{name} = %{version}-%{release}
 
 %description gdb
 This package contains bundled GDB 7.8
+
+%package lldb
+Summary:	Next generation high-performance debugger
+Summary(pl.UTF-8):	Wydajny debugger nowej generacji
+Group:		Development/Debuggers
+URL:		http://lldb.llvm.org/
+Requires:	%{name} = %{version}-%{release}
+
+%description lldb
+LLDB is a next generation, high-performance debugger. It is built as a
+set of reusable components which highly leverage existing libraries in
+the larger LLVM Project, such as the Clang expression parser and LLVM
+disassembler.
+
+%description lldb -l pl.UTF-8
+LLDB to wydajny debugger nowej generacji. Jest zbudowany w oparciu o
+komponenty wielokrotnego użytku, wykorzystujące istniejące biblioteki
+w projekcie LLVM, takie jak analizator wyrażeń kompilatora Clang oraz
+disasembler LLVM.
 
 %prep
 %setup -qn %{product}-%{version}
@@ -135,8 +157,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_appdir}/bin/fsnotifier*
 %attr(755,root,root) %{_appdir}/bin/libbreakgen*.so
 %attr(755,root,root) %{_appdir}/bin/libyjpagent-linux*.so
-# not packaging due liblldb.so.3 => not found
-#%attr(755,root,root) %{_appdir}/bin/LLDBFrontend
 %dir %{_appdir}/lib
 %{_appdir}/lib/*.jar
 %dir %{_appdir}/lib/libpty
@@ -155,3 +175,31 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %defattr(-,root,root,-)
 %{_appdir}/bin/gdb
+
+%files lldb
+%defattr(644,root,root,755)
+%dir %{_appdir}/bin/lldb
+%dir %{_appdir}/bin/lldb/bin
+%dir %{_appdir}/bin/lldb/lib
+%attr(755,root,root) %{_appdir}/bin/lldb/LLDBFrontend
+%attr(755,root,root) %{_appdir}/bin/lldb/bin/lldb-server
+%attr(755,root,root) %{_appdir}/bin/lldb/lib/liblldb.so.3
+
+%dir %{_appdir}/bin/lldb/lib/python2.7
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/formatters
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/formatters/cpp
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/runtime
+%dir %{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/utils
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/*.py
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/*.py
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/formatters/*.py
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/formatters/cpp/*.py
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/lldb-argdumper
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/runtime/*.py
+%{_appdir}/bin/lldb/lib/python2.7/site-packages/lldb/utils/*.py
+
+%dir %{_appdir}/bin/lldb/renderers
+%dir %{_appdir}/bin/lldb/renderers/lldb_formatters
+%{_appdir}/bin/lldb/renderers/lldb_formatters/*.py
