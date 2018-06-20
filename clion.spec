@@ -15,7 +15,7 @@ Patch0:		pld.patch
 URL:		http://www.jetbrains.com/clion/
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
-BuildRequires:	rpmbuild(macros) >= 1.583
+BuildRequires:	rpmbuild(macros) >= 1.734
 BuildRequires:	unzip
 Requires:	jre >= 1.6
 Suggests:	%{name}-cmake
@@ -23,9 +23,6 @@ Suggests:	%{name}-gdb
 Suggests:	cmake >= 2.8
 Suggests:	gdb >= 7.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-# Unresolved symbols found: _ZSt11__once_call: _ZSt15__once_callable
-%define		skip_post_check_so	liblldb.so.3
 
 # don't strip fsnotifier, it's size is checked for "outdated binary"
 # https://bugs.archlinux.org/task/34703
