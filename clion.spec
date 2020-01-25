@@ -1,5 +1,4 @@
 %define		product	clion
-%include	/usr/lib/rpm/macros.java
 Summary:	C/C++ IDE
 Name:		clion
 Version:	2016.2
